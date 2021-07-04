@@ -96,13 +96,15 @@ class Game extends React.Component {
               <button 
                 className={(move === history.length - 1) ? "bold-current-history" : ""} 
                 onClick={()=> this.jumpTo(move)}>{description}</button>
-            </li>
+            </li>            
           );             
     });
 
     let status;
     if (winner != null) {
       status = 'Winner: ' + winner;
+    } else if (winner === null && history.length === 10){
+      status = 'The Game Ended in a Draw'
     } else {
       status = 'Current Player\'s Turn: ' + (this.state.xisNext? 'X' : 'O');
     }
