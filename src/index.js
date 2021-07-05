@@ -29,9 +29,7 @@ class Board extends React.Component {
       for(var j = 0; j < boardSize; ++j) {
         row.push(this.renderSquare(i * boardSize + j));
       }
-      squaresBoard.push(<div key={i} className="board-row">
-          {row}
-        </div>);
+      squaresBoard.push(<div key={i} className="board-row">{row}</div>);
     }
     return (    
       <div>
@@ -50,7 +48,8 @@ class Game extends React.Component {
         squares: Array(9).fill(null),
       }],
       xIsNext: true,
-      stepNumber: 0
+      stepNumber: 0,
+      isAscending: true
     };
   }
 
@@ -83,6 +82,13 @@ class Game extends React.Component {
     });
   }
 
+  ascendToggle(){
+    this.setState({
+      isAscending: !this.state.isAscending      
+    });
+    console.log(this.state.isAscending);
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -100,6 +106,10 @@ class Game extends React.Component {
           );             
     });
 
+    if(!this.state.isAscending){
+      moves.reverse();
+    }
+
     let status;
     if (winner != null) {
       status = 'Winner: ' + winner;
@@ -108,8 +118,9 @@ class Game extends React.Component {
     } else {
       status = 'Current Player\'s Turn: ' + (this.state.xisNext? 'X' : 'O');
     }
-
+        
     return (
+      <div>
       <div className="game">
         <div className="game-board">
           <Board 
@@ -120,8 +131,10 @@ class Game extends React.Component {
         <div className="game-info">
           <div>{status}</div>
           <ol>{moves}</ol>
-        </div>
-      </div>
+        </div>        
+      </div>    
+      <button onClick={()=> this.ascendToggle()}>{this.state.isAscending ? 'ascending' : "decending"}</button> 
+      </div> 
     );
   }
 }
